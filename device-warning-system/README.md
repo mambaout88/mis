@@ -1,11 +1,27 @@
 #设备预警系统
 ##根据当前时间预警所有该检修的设备
 ###1、保养周期为年检的设备预警（提前一个月预警）
-    SELECT d.* FROM device d LEFT JOIN device_type t on d.device_type_sn=t.device_type_sn  
-      where t.check_period=5 and DATE_ADD(d.latest_check_time, INTERVAL 11 MONTH)<NOW()  
-      and DATE_ADD(d.latest_check_time, INTERVAL 12 MONTH)>NOW();  
+![image](https://github.com/mahuiking/mis/blob/master/device-warning-system/imgs/1.PNG)  
+    SELECT d.* FROM device d LEFT JOIN device_type t on d.device_type_sn=t.device_type_sn where t.check_period=5 and DATE_ADD(d.latest_check_time, INTERVAL 11 MONTH) < NOW() and DATE_ADD(d.latest_check_time, INTERVAL 12 MONTH)>NOW();
     
-###2、
+    
+###2、保养周期为月检的设备预警（提前一周预警）
+SELECT d.* FROM device d LEFT JOIN device_type t on d.device_type_sn=t.device_type_sn where t.check_period=1 and   DATE_ADD(d.latest_check_time, INTERVAL 21 DAY) < NOW() and DATE_ADD(d.latest_check_time, INTERVAL 1 MONTH)>NOW();    
+##根据设备编号，查询出设备检修报告（包括历史检修情况和材料消耗情况）
+
+###1、根据设备号查询出所有的检修记录
+![image](https://github.com/mahuiking/mis/blob/master/device-warning-system/imgs/2.PNG)  
+    SELECT * FROM maintenance_record where device_sn='device-001';  
+    
+    
+###2、选中其中一条检修记录，查询明细
+![image](https://github.com/mahuiking/mis/blob/master/device-warning-system/imgs/3.PNG)  
+    SELECT * FROM maintanance_details WHERE maintenance_record_sn =201610051753001;  
+    
+    
+    
+###3、生成检修报告
+
 ##SQL语句
 /*  
 Navicat MySQL Data Transfer  
